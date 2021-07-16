@@ -1,0 +1,18 @@
+<mat-card class="question-card" [formGroup]="form">
+  <p class="question-card__title">{{question.questionTitle}}</p>
+  <mat-radio-group
+    aria-labelledby="example-radio-group-label"
+    class="example-radio-group"
+    formControlName="answer"
+  >
+    <mat-radio-button class="example-radio-button" *ngFor="let answer of question.answers" [value]="answer.value">
+      {{answer.title}}
+    </mat-radio-button>
+  </mat-radio-group>
+
+  <div class="question-card__btn">
+    <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="submit()">
+      {{isEdit ? 'Return back' : 'Answers'}}
+    </button>
+  </div>
+</mat-card>

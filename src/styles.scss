@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.question-card {
+  margin: 0 0 20px;
+  &__title {
+    font-weight: 500;
+    font-size: 16px;
+  }
+  &__btn {
+    text-align: right;
+  }
+}

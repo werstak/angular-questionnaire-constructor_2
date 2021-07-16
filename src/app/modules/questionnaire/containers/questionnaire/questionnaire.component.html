@@ -1,0 +1,5 @@
+<div class="questionnaire">
+  <app-question-list [questions]="questions$ | async" class="questionnaire__item"></app-question-list>
+  <app-answer-list [answers]="answers$ | async" class="questionnaire__item"></app-answer-list>
+</div>
+

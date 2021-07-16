@@ -1,0 +1,11 @@
+<mat-card class="question-card" [formGroup]="form">
+  <p class="question-card__title">{{question.questionTitle}}</p>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <textarea matInput placeholder="Your message text" formControlName="answer"></textarea>
+  </mat-form-field>
+  <div class="question-card__btn">
+    <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="submit()">
+      {{isEdit ? 'Return back' : 'Answers'}}
+    </button>
+  </div>
+</mat-card>

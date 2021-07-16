@@ -1,0 +1,15 @@
+.questionnaire {
+  display: flex;
+  flex-direction: row;
+
+  &__item {
+    width: 50%;
+    padding: 25px;
+    min-height: 100vh;
+    border: 1px solid #0000001a;
+    margin: 15px;
+    border-radius: 3px;
+    background: aliceblue;
+  }
+
+}

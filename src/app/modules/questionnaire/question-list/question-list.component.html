@@ -1,0 +1,7 @@
+<h2>Question List</h2>
+
+<div *ngFor="let question of questions">
+  <app-question-single-choice [question]="question" *ngIf="question.questionType === 'radio'"></app-question-single-choice>
+  <app-question-multiple-choice [question]="question" *ngIf="question.questionType === 'checkbox'"></app-question-multiple-choice>
+  <app-question-open [question]="question" *ngIf="question.questionType === 'textarea'"></app-question-open>
+</div>

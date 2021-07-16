@@ -1,0 +1,6 @@
+<h2>Answer List</h2>
+<div *ngFor="let answer of answers">
+  <app-question-single-choice [question]="answer" *ngIf="answer.questionType === 'radio'"></app-question-single-choice>
+  <app-question-multiple-choice [question]="answer" *ngIf="answer.questionType === 'checkbox'"></app-question-multiple-choice>
+  <app-question-open [question]="answer" *ngIf="answer.questionType === 'textarea'"></app-question-open>
+</div>
