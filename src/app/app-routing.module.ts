@@ -14,8 +14,8 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'question-management',
-        loadChildren: () => import('./modules/question-management/question-management.module').then(m => m.QuestionManagementModule)
+        path: 'questions-management',
+        loadChildren: () => import('./modules/questions-management/questions-management.module').then(m => m.QuestionsManagementModule)
       },
       {
         path: 'questionnaire',

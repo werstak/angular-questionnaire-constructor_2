@@ -1,0 +1,8 @@
+.question-management {
+  &__btnCreate {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 0 0 30px;
+  }
+}

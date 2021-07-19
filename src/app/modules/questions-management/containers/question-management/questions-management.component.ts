@@ -6,10 +6,10 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-question-management',
-  templateUrl: './question-management.component.html',
-  styleUrls: ['./question-management.component.scss']
+  templateUrl: './questions-management.component.html',
+  styleUrls: ['./questions-management.component.scss']
 })
-export class QuestionManagementComponent implements OnInit {
+export class QuestionsManagementComponent implements OnInit {
 
   public question$: Observable<any>;
 

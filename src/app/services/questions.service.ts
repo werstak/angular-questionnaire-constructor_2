@@ -8,15 +8,17 @@ import { QuestionsInterface } from '../shared/interfaces/questions.interface';
 })
 export class QuestionsService {
   allQuestions: QuestionsInterface;
+
   constructor() {
   }
 
   /** Getting Questions */
-/*  fetchQuestions(): Observable<any> {
-    const allQuestions = this.allQuestions = JSON.parse(localStorage.getItem('all_questions') || '{}');
-    console.log('QuestionsService ===', allQuestions);
-    return allQuestions;
-  }*/
+
+  /*  fetchQuestions(): Observable<any> {
+      const allQuestions = this.allQuestions = JSON.parse(localStorage.getItem('all_questions') || '{}');
+      console.log('QuestionsService ===', allQuestions);
+      return allQuestions;
+    }*/
 
 
   fetchQuestions(): Observable<any> {
