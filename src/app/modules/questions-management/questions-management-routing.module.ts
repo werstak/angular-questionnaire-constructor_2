@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuestionsManagementComponent } from './containers/question-management/questions-management.component';
-import { QuestionsConstructorComponent } from './questions-constructor/questions-constructor.component';
+import { QuestionsBuilderComponent } from './questions-builder/questions-builder.component';
 
 const routes: Routes = [
   {
@@ -10,11 +10,11 @@ const routes: Routes = [
   },
   {
     path: 'create-question',
-    component: QuestionsConstructorComponent,
+    component: QuestionsBuilderComponent,
   },
   {
     path: 'update-question',
-    component: QuestionsConstructorComponent,
+    component: QuestionsBuilderComponent,
   },
   {
     path: '',

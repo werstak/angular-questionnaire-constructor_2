@@ -1,0 +1,93 @@
+<mat-card class="question-card" [formGroup]="formQuestionsBuilder">
+  <div class="questions-builder">
+
+    <h2>Questions builder</h2>
+
+    <div class="questions-builder__item">
+      <p class="question-card__title">Enter the question text</p>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Question title</mat-label>
+        <textarea
+          formControlName="questionTitle"
+          name="questionTitle"
+          #questionTitle
+          matInput>
+      </textarea>
+        <mat-hint align="end">{{questionTitle.value?.length || 0}}/250</mat-hint>
+        <mat-error *ngIf="formQuestionsBuilder.controls['questionTitle'].hasError('required')">
+          Field is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="questions-builder__item">
+      <p class="question-card__title">Select question type</p>
+      <mat-radio-group
+        aria-labelledby="example-radio-group-label"
+        class="example-radio-group"
+        formControlName="questionType">
+        <mat-radio-button class="example-radio-button" *ngFor="let type of selectedType" [value]="type">
+          {{type.value | json}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div class="questions-builder__item">
+      <p class="question-card__title">
+        <span class="question-card__titleText">
+          Add answers choices to the question
+        </span>
+        <button mat-mini-fab color="primary"
+                aria-label="Example icon button with a home icon">
+          <mat-icon>add</mat-icon>
+        </button>
+      </p>
+
+      <div *ngIf="formQuestionsBuilder"
+           class="question-card__answers"
+           formGroupName="answers">
+        <mat-form-field class="question-card__answerField question-card__answerField-small" appearance="fill">
+          <mat-label>Write the response id. For example "one_answer"</mat-label>
+          <input
+            formControlName="value"
+            name="answer_value"
+            #answer_value
+            matInput>
+          <mat-hint align="end">{{answer_value.value?.length || 0}}/10</mat-hint>
+          <!--        <mat-error *ngIf="formQuestionsBuilder.controls['value'].hasError('required')">-->
+          <!--          Field is required-->
+          <!--        </mat-error>-->
+        </mat-form-field>
+
+        <mat-form-field class="question-card__answerField question-card__answerField-larger" appearance="fill">
+          <mat-label>Write the text of the answer option</mat-label>
+          <input
+            formControlName="title"
+            name="title"
+            #title
+            matInput>
+          <mat-hint align="end">{{title.value?.length || 0}}/200</mat-hint>
+          <!--        <mat-error *ngIf="formQuestionsBuilder.controls['title'].hasError('required')">-->
+          <!--          Field is required-->
+          <!--        </mat-error>-->
+        </mat-form-field>
+
+        <button mat-mini-fab color="warn"
+                aria-label="Example icon button with a home icon">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+      </div>
+    </div>
+
+
+    <div class="question-card__btn">
+      <button mat-raised-button color="primary" [disabled]="formQuestionsBuilder.invalid" (click)="submit()">
+        Create
+      </button>
+    </div>
+
+
+  </div>
+</mat-card>
+

@@ -1,0 +1,14 @@
+.questions-builder {
+  h2 {
+    text-align: center;
+  }
+
+  &__item {
+    margin: 0 0 30px;
+  }
+
+  &__title {
+    font-weight: 500;
+    font-size: 16px;
+  }
+}

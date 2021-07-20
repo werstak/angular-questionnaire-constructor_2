@@ -1,20 +1,23 @@
-<div class="question-management">
+<mat-card>
+  <div class="question-management">
 
-  <p>question-management works!</p>
+    <h2>List questions</h2>
 
-  <div class="question-management__btnCreate">
-    <a mat-raised-button color="primary" routerLink="/questions-management/create-question">Create a new question</a>
+    <div class="question-management__btnCreate">
+      <a mat-raised-button color="primary" routerLink="/questions-management/create-question">Create a new question</a>
+    </div>
+
+    <!--<p>{{question$ | async | json}}</p>-->
+
+    <!--    <div *ngIf="question$ | async as questions">-->
+    <!--      <p *ngFor="let question of questions.payload">-->
+    <!--        {{ question | json}}-->
+    <!--      </p>-->
+    <!--    </div>-->
+
   </div>
 
-  <!--<p>{{question$ | async | json}}</p>-->
+</mat-card>
 
-  <div *ngIf="question$ | async as questions">
-    <p *ngFor="let question of questions.payload">
-      {{ question | json}}
-    </p>
-  </div>
-
-
-</div>
 
 
