@@ -37,17 +37,8 @@ body {
   }
 
   &__answerField {
-    margin: 0 25px 0 0;
-
-    &-small {
-      width: 100%;
-      max-width: 30%;
-    }
-
-    &-larger {
-      width: 100%;
-      max-width: 60%;
-    }
+    margin: 0 30px 0 0;
+    flex-grow: 1;
   }
 
   &__btn {

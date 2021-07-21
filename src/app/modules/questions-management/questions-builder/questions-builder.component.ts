@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuestionsInterface } from '../../../shared/interfaces/questions.interface';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-questions-builder',
@@ -28,27 +29,23 @@ export class QuestionsBuilderComponent implements OnInit {
 
   private initialForm(): void {
     this.formQuestionsBuilder = this.fb.group({
+      id: [uuid.v4()],
+      questionType: [null, Validators.required],
       questionTitle: [null, Validators.compose([
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(250)])
       ],
-      questionType: [null, Validators.required],
-
-      options: this.fb.array([this.fb.group({
-        value: [null, Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(10)])
-        ],
+      answers: this.fb.array([this.fb.group({
+        value: [uuid.v4()],
         title: [null, Validators.compose([
           Validators.required,
           Validators.minLength(3),
-          Validators.maxLength(200)])
+          Validators.maxLength(250)])
         ],
       })]),
 
-      // options: this.fb.group({
+      // answers: this.fb.group({
       //   value: [null, Validators.compose([
       //     Validators.required,
       //     Validators.minLength(3),
@@ -66,29 +63,30 @@ export class QuestionsBuilderComponent implements OnInit {
   }
 
   get options(): Array<AbstractControl> {
-    return (this.formQuestionsBuilder.get('options') as FormArray).controls;
+    return (this.formQuestionsBuilder.get('answers') as FormArray).controls;
   }
 
   addNewAnswer(): void {
     const answersModel = this.fb.group({
-      value: [null, Validators.compose([
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(10)])
-      ],
+      value: [uuid.v4()],
       title: [null, Validators.compose([
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(200)])
       ],
     });
-    (this.formQuestionsBuilder.get('options') as FormArray).push(answersModel);
+    (this.formQuestionsBuilder.get('answers') as FormArray).push(answersModel);
+  }
 
+  removeAnswer(index): void {
+    const answerArray = (this.formQuestionsBuilder.get('answers') as FormArray);
+    answerArray.removeAt(index);
   }
 
   submitQuestion(): void {
     console.log('formQuestionsBuilder', this.formQuestionsBuilder.value);
     this.formQuestionsBuilder.reset();
   }
+
 
 }
