@@ -23,7 +23,7 @@ export class QuestionsService {
 
   fetchQuestions(): Observable<any> {
     this.allQuestions = JSON.parse(localStorage.getItem('all_questions') || '{}');
-    console.log('QuestionsService ===', this.allQuestions);
+    // console.log('QuestionsService ===', this.allQuestions);
     return of(this.allQuestions);
   }
 

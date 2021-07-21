@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuestionsInterface } from '../../../shared/interfaces/questions.interface';
+import { Location } from '@angular/common';
+
 import * as uuid from 'uuid';
 
 @Component({
@@ -11,6 +13,8 @@ import * as uuid from 'uuid';
 export class QuestionsBuilderComponent implements OnInit {
   questionTitle: QuestionsInterface;
   formQuestionsBuilder: FormGroup;
+  lengthArrayAnswer = 1;
+  maxAnswers = 5;
 
   selectedType: {}[] = [
     {questionType: 'radio', value: 'Single choice - the ability to choose only one option from the proposed'},
@@ -19,7 +23,8 @@ export class QuestionsBuilderComponent implements OnInit {
   ];
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private location: Location
   ) {
   }
 
@@ -44,22 +49,8 @@ export class QuestionsBuilderComponent implements OnInit {
           Validators.maxLength(250)])
         ],
       })]),
-
-      // answers: this.fb.group({
-      //   value: [null, Validators.compose([
-      //     Validators.required,
-      //     Validators.minLength(3),
-      //     Validators.maxLength(10)])
-      //   ],
-      //   title: [null, Validators.compose([
-      //     Validators.required,
-      //     Validators.minLength(3),
-      //     Validators.maxLength(200)])
-      //   ],
-      // }),
-
+      answer: [null]
     });
-
   }
 
   get options(): Array<AbstractControl> {
@@ -67,25 +58,39 @@ export class QuestionsBuilderComponent implements OnInit {
   }
 
   addNewAnswer(): void {
-    const answersModel = this.fb.group({
-      value: [uuid.v4()],
-      title: [null, Validators.compose([
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(200)])
-      ],
-    });
-    (this.formQuestionsBuilder.get('answers') as FormArray).push(answersModel);
+    if (this.lengthArrayAnswer < this.maxAnswers) {
+      const answersModel = this.fb.group({
+        value: [uuid.v4()],
+        title: [null, Validators.compose([
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(200)])
+        ],
+      });
+      (this.formQuestionsBuilder.get('answers') as FormArray).push(answersModel);
+      this.lengthArrayAnswer++;
+    }
+    return;
   }
 
   removeAnswer(index): void {
     const answerArray = (this.formQuestionsBuilder.get('answers') as FormArray);
     answerArray.removeAt(index);
+    this.lengthArrayAnswer--;
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   submitQuestion(): void {
-    console.log('formQuestionsBuilder', this.formQuestionsBuilder.value);
+    const dataForm = this.formQuestionsBuilder.value;
+    console.log('dataForm', dataForm);
+
     this.formQuestionsBuilder.reset();
+    const answerArray = (this.formQuestionsBuilder.get('answers') as FormArray);
+    answerArray.clear();
+    this.goBack();
   }
 
 

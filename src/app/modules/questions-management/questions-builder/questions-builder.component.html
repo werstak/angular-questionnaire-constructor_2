@@ -1,7 +1,7 @@
 <mat-card class="question-card" [formGroup]="formQuestionsBuilder">
   <div class="questions-builder">
 
-    <h2>Questions builder</h2>
+    <h2>Questions Builder</h2>
 
     <div class="questions-builder__item">
       <p class="question-card__title">Enter the question text</p>
@@ -43,6 +43,10 @@
         </button>
       </p>
 
+      <div *ngIf="lengthArrayAnswer >= maxAnswers" class="questions-builder__notification">
+        Maximum number of responses {{ maxAnswers }}
+      </div>
+
       <ng-container *ngFor="let control of options; let idx = index">
         <div class="question-card__answers"
              [formGroup]="control">
@@ -61,41 +65,13 @@
 
           <button mat-mini-fab color="warn"
                   aria-label="Example icon button with a home icon"
+                  [disabled]="lengthArrayAnswer < 3"
                   (click)="removeAnswer(idx)">
             <mat-icon>delete</mat-icon>
           </button>
+
         </div>
       </ng-container>
-
-      <pre> {{ formQuestionsBuilder.value | json }} </pre>
-
-      <!--      <div class="question-card__answers"
-                 formGroupName="answers">
-              <mat-form-field class="question-card__answerField question-card__answerField-small" appearance="fill">
-                <mat-label>Write the response id. For example "one_answer"</mat-label>
-                <input
-                  formControlName="value"
-                  name="answer_value"
-                  #answer_value
-                  matInput>
-                <mat-hint align="end">{{answer_value.value?.length || 0}}/10</mat-hint>
-              </mat-form-field>
-
-              <mat-form-field class="question-card__answerField question-card__answerField-larger" appearance="fill">
-                <mat-label>Write the text of the answer option</mat-label>
-                <input
-                  formControlName="title"
-                  name="title"
-                  #title
-                  matInput>
-                <mat-hint align="end">{{title.value?.length || 0}}/200</mat-hint>
-              </mat-form-field>
-
-              <button mat-mini-fab color="warn"
-                      aria-label="Example icon button with a home icon">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>-->
 
 
     </div>
@@ -107,6 +83,7 @@
       </button>
     </div>
 
+    <pre> {{ formQuestionsBuilder.value | json }} </pre>
 
   </div>
 </mat-card>
