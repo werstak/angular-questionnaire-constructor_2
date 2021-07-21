@@ -38,51 +38,72 @@
           Add answers choices to the question
         </span>
         <button mat-mini-fab color="primary"
-                aria-label="Example icon button with a home icon">
+                aria-label="Example icon button with a home icon" (click)="addNewAnswer()">
           <mat-icon>add</mat-icon>
         </button>
       </p>
 
-      <div *ngIf="formQuestionsBuilder"
-           class="question-card__answers"
-           formGroupName="answers">
-        <mat-form-field class="question-card__answerField question-card__answerField-small" appearance="fill">
-          <mat-label>Write the response id. For example "one_answer"</mat-label>
-          <input
-            formControlName="value"
-            name="answer_value"
-            #answer_value
-            matInput>
-          <mat-hint align="end">{{answer_value.value?.length || 0}}/10</mat-hint>
-          <!--        <mat-error *ngIf="formQuestionsBuilder.controls['value'].hasError('required')">-->
-          <!--          Field is required-->
-          <!--        </mat-error>-->
-        </mat-form-field>
+      <ng-container *ngFor="let control of options; let idx = index">
+        <div class="question-card__answers"
+             [formGroup]="control">
 
-        <mat-form-field class="question-card__answerField question-card__answerField-larger" appearance="fill">
-          <mat-label>Write the text of the answer option</mat-label>
-          <input
-            formControlName="title"
-            name="title"
-            #title
-            matInput>
-          <mat-hint align="end">{{title.value?.length || 0}}/200</mat-hint>
-          <!--        <mat-error *ngIf="formQuestionsBuilder.controls['title'].hasError('required')">-->
-          <!--          Field is required-->
-          <!--        </mat-error>-->
-        </mat-form-field>
+          <mat-form-field class="question-card__answerField question-card__answerField-small" appearance="fill">
+            <mat-label>Write the response id. For example "one_answer"</mat-label>
+            <input
+              formControlName="value"
+              matInput>
+          </mat-form-field>
 
-        <button mat-mini-fab color="warn"
-                aria-label="Example icon button with a home icon">
-          <mat-icon>delete</mat-icon>
-        </button>
+          <mat-form-field class="question-card__answerField question-card__answerField-larger" appearance="fill">
+            <mat-label>Write the text of the answer option</mat-label>
+            <input
+              formControlName="title"
+              matInput>
+          </mat-form-field>
 
-      </div>
+          <button mat-mini-fab color="warn"
+                  aria-label="Example icon button with a home icon">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+
+      <pre> {{ formQuestionsBuilder.value | json }} </pre>
+
+      <!--      <div class="question-card__answers"
+                 formGroupName="options">
+              <mat-form-field class="question-card__answerField question-card__answerField-small" appearance="fill">
+                <mat-label>Write the response id. For example "one_answer"</mat-label>
+                <input
+                  formControlName="value"
+                  name="answer_value"
+                  #answer_value
+                  matInput>
+                <mat-hint align="end">{{answer_value.value?.length || 0}}/10</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="question-card__answerField question-card__answerField-larger" appearance="fill">
+                <mat-label>Write the text of the answer option</mat-label>
+                <input
+                  formControlName="title"
+                  name="title"
+                  #title
+                  matInput>
+                <mat-hint align="end">{{title.value?.length || 0}}/200</mat-hint>
+              </mat-form-field>
+
+              <button mat-mini-fab color="warn"
+                      aria-label="Example icon button with a home icon">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>-->
+
+
     </div>
 
 
     <div class="question-card__btn">
-      <button mat-raised-button color="primary" [disabled]="formQuestionsBuilder.invalid" (click)="submit()">
+      <button mat-raised-button color="primary" [disabled]="formQuestionsBuilder.invalid" (click)="submitQuestion()">
         Create
       </button>
     </div>
