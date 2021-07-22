@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 const modules = [
@@ -27,7 +29,9 @@ const modules = [
   MatInputModule,
   MatProgressBarModule,
   MatRadioModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatTableModule,
+  MatTooltipModule
 ];
 
 @NgModule({

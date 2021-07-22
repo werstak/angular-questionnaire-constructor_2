@@ -10,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'questionnaire/list',
+        redirectTo: 'questions-management/list',
         pathMatch: 'full'
       },
       {

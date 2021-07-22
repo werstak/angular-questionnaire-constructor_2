@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { QuestionnaireService } from '../../questionnaire.service';
+import { QuestionnaireService } from '../../../../services/questionnaire.service';
 
 import { QuestionsInterface } from '../../../../shared/interfaces/questions.interface';
 import { AnswersInterface } from '../../../../shared/interfaces/answers.interface';

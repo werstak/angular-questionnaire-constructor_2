@@ -1,22 +1,30 @@
 import { Injectable } from '@angular/core';
-import { QUESTIONS } from '../../shared/constants/questions';
 
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { QuestionsInterface } from '../../shared/interfaces/questions.interface';
-import { AnswersInterface } from '../../shared/interfaces/answers.interface';
+import { QuestionsInterface } from '../shared/interfaces/questions.interface';
+import { AnswersInterface } from '../shared/interfaces/answers.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuestionnaireService {
-  allQuestions: QuestionsInterface[];
   answers$: Observable<QuestionsInterface[]>;
-  questions$: Observable<QuestionsInterface[]>;
   allAnswers$ = new BehaviorSubject<AnswersInterface>(
     this.getAllAnswers()
   );
+
+  allQuestions: QuestionsInterface[];
+  questions$: Observable<QuestionsInterface[]>;
+
+
+  allQuestionsList: QuestionsInterface[];
+  questionsList$: Observable<QuestionsInterface[]>;
+
+  // questionsList$ = new BehaviorSubject<QuestionsInterface>(
+  //   this.getAllQuestionsList()
+  // );
 
   updateQuestions$(allQuestions: any): void {
     this.questions$ = combineLatest([
@@ -44,12 +52,6 @@ export class QuestionnaireService {
     );
   }
 
-
-  setQuestion(question: QuestionsInterface): void {
-    this.allQuestions = [...this.allQuestions, question];
-    localStorage.setItem('all_questions', JSON.stringify([...this.allQuestions, question]));
-    this.updateQuestions$(this.allQuestions);
-  }
 
   // setAllQuestions(): void {
   //   localStorage.setItem('all_questions', JSON.stringify(QUESTIONS));
@@ -85,4 +87,27 @@ export class QuestionnaireService {
     const answers = this.getAllAnswers();
     return answers[id];
   }
+
+  /** Management questions */
+
+  getAllQuestionsList(): void {
+    this.questionsList$ = (this.allQuestionsList = JSON.parse(localStorage.getItem('all_questions') || '[]'));
+    console.log('allQuestionsList', this.allQuestionsList);
+  }
+
+  createQuestion(question: QuestionsInterface): void {
+    this.allQuestions = [...this.allQuestions, question];
+    localStorage.setItem('all_questions', JSON.stringify([...this.allQuestions]));
+    this.updateQuestions$(this.allQuestions);
+  }
+
+  deleteQuestion(questionId): void {
+    const questionsList = this.allQuestions = JSON.parse(localStorage.getItem('all_questions') || '[]').filter(n => n.id !== questionId);
+    localStorage.setItem('all_questions', JSON.stringify(questionsList));
+    this.updateQuestions$(questionsList);
+
+    console.log(questionsList);
+  }
+
+
 }

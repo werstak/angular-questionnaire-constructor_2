@@ -3,6 +3,7 @@ import { QuestionsInterface } from '../interfaces/questions.interface';
 export const QUESTIONS: QuestionsInterface[] = [
   {
     id: 1,
+    date: '2021-07-22T08:46:42.603Z',
     questionType: 'radio',
     questionTitle: 'How did you hear about our "product" for the first time?',
     answers: [
@@ -13,6 +14,7 @@ export const QUESTIONS: QuestionsInterface[] = [
   },
   {
     id: 2,
+    date: '2021-07-22T08:46:42.603Z',
     questionType: 'checkbox',
     questionTitle: 'Where did you buy the "product"?',
     answers: [
@@ -23,11 +25,13 @@ export const QUESTIONS: QuestionsInterface[] = [
   },
   {
     id: 3,
+    date: '2021-07-22T08:46:42.603Z',
     questionType: 'textarea',
     questionTitle: 'What do you like most about our "product"?',
   },
   {
     id: 4,
+    date: '2021-07-22T08:46:42.603Z',
     questionType: 'radio',
     questionTitle: 'Please rate the overall quality of our "product":',
     answers: [
@@ -38,6 +42,7 @@ export const QUESTIONS: QuestionsInterface[] = [
   },
   {
     id: 5,
+    date: '2021-07-22T08:46:42.603Z',
     questionType: 'checkbox',
     questionTitle: 'How often do you use the "product"?',
     answers: [
@@ -49,6 +54,7 @@ export const QUESTIONS: QuestionsInterface[] = [
   },
   {
     id: 6,
+    date: '2021-07-22T08:46:42.603Z',
     questionType: 'textarea',
     questionTitle: 'If you have any suggestions for improving our "product"?',
   },

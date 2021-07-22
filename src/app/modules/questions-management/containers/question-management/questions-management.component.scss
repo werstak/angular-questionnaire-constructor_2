@@ -6,3 +6,12 @@
     margin: 0 0 30px;
   }
 }
+
+table {
+  width: 100%;
+}
+th.mat-header-cell.header-btn, .body-btn {
+  text-align: end;
+  width: 50px;
+  min-width: 50px;
+}

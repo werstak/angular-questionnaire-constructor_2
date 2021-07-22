@@ -4,7 +4,7 @@ import { QuestionsInterface } from '../../../shared/interfaces/questions.interfa
 import { Location } from '@angular/common';
 
 import * as uuid from 'uuid';
-import { QuestionnaireService } from '../../questionnaire/questionnaire.service';
+import { QuestionnaireService } from '../../../services/questionnaire.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -121,7 +121,7 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
 
   submitQuestion(): void {
     const dataForm = this.formQuestionsBuilder.value;
-    this.questionnaireService.setQuestion(dataForm);
+    this.questionnaireService.createQuestion(dataForm);
     this.goBack();
   }
 

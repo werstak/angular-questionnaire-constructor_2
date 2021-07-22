@@ -7,13 +7,60 @@
       <a mat-raised-button color="primary" routerLink="/questions-management/create-question">Create a new question</a>
     </div>
 
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="questions$">
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.date | date:'y.M.d - h:mm a'}} </td>
+        </ng-container>
+
+        <!-- questionTitle Column -->
+        <ng-container matColumnDef="questionTitle">
+          <th mat-header-cell *matHeaderCellDef>Title question </th>
+          <td mat-cell *matCellDef="let element"> {{element.questionTitle}} </td>
+        </ng-container>
+
+        <!-- edit -->
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell class="header-btn" *matHeaderCellDef></th>
+          <td mat-cell class="body-btn" *matCellDef="let element">
+            <button mat-icon-button color="primary" matTooltip="Edit Question"
+                    (click)="editQuestion(element.id)">
+              <mat-icon aria-label="Edit">edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- delete -->
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell class="header-btn" *matHeaderCellDef></th>
+          <td mat-cell class="body-btn" *matCellDef="let element">
+            <button mat-icon-button
+                    color="primary"
+                    matTooltip="Delete Question"
+                    (click)="dellQuestion(element.id)">
+              <mat-icon aria-label="Delete">delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+    </div>
+
+
+
     <!--<p>{{question$ | async | json}}</p>-->
 
-        <div *ngIf="question$ | async as questions">
-          <p *ngFor="let question of questions.payload">
-            {{ question | json}}
-          </p>
-        </div>
+<!--        <div *ngIf="question$ | async as questions">-->
+<!--          <p *ngFor="let question of questions.payload">-->
+<!--            {{ question | json}}-->
+<!--          </p>-->
+<!--        </div>-->
 
   </div>
 
