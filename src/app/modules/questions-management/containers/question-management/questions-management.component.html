@@ -9,11 +9,11 @@
 
     <!--<p>{{question$ | async | json}}</p>-->
 
-    <!--    <div *ngIf="question$ | async as questions">-->
-    <!--      <p *ngFor="let question of questions.payload">-->
-    <!--        {{ question | json}}-->
-    <!--      </p>-->
-    <!--    </div>-->
+        <div *ngIf="question$ | async as questions">
+          <p *ngFor="let question of questions.payload">
+            {{ question | json}}
+          </p>
+        </div>
 
   </div>
 

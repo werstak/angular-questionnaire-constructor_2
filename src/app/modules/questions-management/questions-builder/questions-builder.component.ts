@@ -1,22 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { QuestionsInterface } from '../../../shared/interfaces/questions.interface';
 import { Location } from '@angular/common';
 
 import * as uuid from 'uuid';
+import { QuestionnaireService } from '../../questionnaire/questionnaire.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-questions-builder',
   templateUrl: './questions-builder.component.html',
   styleUrls: ['./questions-builder.component.scss']
 })
-export class QuestionsBuilderComponent implements OnInit {
+export class QuestionsBuilderComponent implements OnInit, OnDestroy {
   questionTitle: QuestionsInterface;
   formQuestionsBuilder: FormGroup;
-  lengthArrayAnswer = 1;
+  lengthArrayAnswer = 2;
   maxAnswers = 5;
+  date = new Date();
+  changeForm: Subscription;
 
-  selectedType: {}[] = [
+  selectedType = [
     {questionType: 'radio', value: 'Single choice - the ability to choose only one option from the proposed'},
     {questionType: 'checkbox', value: 'Multiple Choice - the ability to choose several of the proposed options'},
     {questionType: 'textarea', value: 'Open - the ability to write (type) your answer'},
@@ -24,37 +28,69 @@ export class QuestionsBuilderComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private location: Location
+    private location: Location,
+    private questionnaireService: QuestionnaireService,
   ) {
   }
 
   ngOnInit(): void {
     this.initialForm();
+
+    this.changeForm = this.questionTypeControl.valueChanges
+      .subscribe(type => {
+        this.options.forEach((option: FormControl) => {
+          option.get('title').reset();
+        });
+
+        if (type === 'textarea') {
+          this.answersFormArray.disable();
+        } else {
+          this.answersFormArray.enable();
+        }
+      });
   }
 
   private initialForm(): void {
     this.formQuestionsBuilder = this.fb.group({
       id: [uuid.v4()],
-      questionType: [null, Validators.required],
+      date: [this.date],
+      questionType: ['radio', Validators.required],
       questionTitle: [null, Validators.compose([
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(250)])
       ],
-      answers: this.fb.array([this.fb.group({
-        value: [uuid.v4()],
-        title: [null, Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(250)])
-        ],
-      })]),
-      answer: [null]
+      answers: this.fb.array([
+        this.fb.group({
+          value: [uuid.v4()],
+          title: [null, Validators.compose([
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(250)])
+          ],
+        }),
+        this.fb.group({
+          value: [uuid.v4()],
+          title: [null, Validators.compose([
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(250)])
+          ],
+        })
+      ]),
     });
   }
 
+  get answersFormArray(): FormArray {
+    return this.formQuestionsBuilder.get('answers') as FormArray;
+  }
+
   get options(): Array<AbstractControl> {
-    return (this.formQuestionsBuilder.get('answers') as FormArray).controls;
+    return this.answersFormArray.controls;
+  }
+
+  get questionTypeControl(): FormControl {
+    return this.formQuestionsBuilder.get('questionType') as FormControl;
   }
 
   addNewAnswer(): void {
@@ -85,13 +121,11 @@ export class QuestionsBuilderComponent implements OnInit {
 
   submitQuestion(): void {
     const dataForm = this.formQuestionsBuilder.value;
-    console.log('dataForm', dataForm);
-
-    this.formQuestionsBuilder.reset();
-    const answerArray = (this.formQuestionsBuilder.get('answers') as FormArray);
-    answerArray.clear();
+    this.questionnaireService.setQuestion(dataForm);
     this.goBack();
   }
 
-
+  ngOnDestroy(): void {
+    this.changeForm.unsubscribe();
+  }
 }

@@ -25,7 +25,6 @@ export const QUESTIONS: QuestionsInterface[] = [
     id: 3,
     questionType: 'textarea',
     questionTitle: 'What do you like most about our "product"?',
-    answer: '',
   },
   {
     id: 4,
@@ -52,6 +51,5 @@ export const QUESTIONS: QuestionsInterface[] = [
     id: 6,
     questionType: 'textarea',
     questionTitle: 'If you have any suggestions for improving our "product"?',
-    answer: '',
   },
 ];

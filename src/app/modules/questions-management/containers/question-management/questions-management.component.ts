@@ -23,8 +23,6 @@ export class QuestionsManagementComponent implements OnInit {
 
     this.question$ = this.store.select(getQuestions);
 
-    console.log('QuestionManagementComponent', this.question$);
-
   }
 
 }

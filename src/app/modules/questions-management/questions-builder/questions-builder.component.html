@@ -26,19 +26,18 @@
         aria-labelledby="example-radio-group-label"
         class="example-radio-group"
         formControlName="questionType">
-        <mat-radio-button class="example-radio-button" *ngFor="let type of selectedType" [value]="type">
+        <mat-radio-button class="example-radio-button" *ngFor="let type of selectedType" [value]="type.questionType">
           {{type.value | json}}
         </mat-radio-button>
       </mat-radio-group>
     </div>
 
-    <div class="questions-builder__item">
+    <div class="questions-builder__item" *ngIf="['radio', 'checkbox'].includes(questionTypeControl.value)">
       <p class="question-card__title">
         <span class="question-card__titleText">
           Add answers choices to the question
         </span>
-        <button mat-mini-fab color="primary"
-                aria-label="Example icon button with a home icon" (click)="addNewAnswer()">
+        <button mat-mini-fab color="primary" aria-label="Example icon button with a home icon" (click)="addNewAnswer()">
           <mat-icon>add</mat-icon>
         </button>
       </p>
@@ -48,8 +47,7 @@
       </div>
 
       <ng-container *ngFor="let control of options; let idx = index">
-        <div class="question-card__answers"
-             [formGroup]="control">
+        <div class="question-card__answers" [formGroup]="control">
 
           <mat-form-field class="question-card__answerField" appearance="fill">
             <mat-label>Write the text of the answer option</mat-label>
@@ -72,8 +70,6 @@
 
         </div>
       </ng-container>
-
-
     </div>
 
 
