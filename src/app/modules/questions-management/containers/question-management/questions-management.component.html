@@ -26,10 +26,11 @@
         <ng-container matColumnDef="edit">
           <th mat-header-cell class="header-btn" *matHeaderCellDef></th>
           <td mat-cell class="body-btn" *matCellDef="let element">
-            <button mat-icon-button color="primary" matTooltip="Edit Question"
-                    (click)="editQuestion(element.id)">
+            <a mat-icon-button color="primary"
+               matTooltip="Edit Question"
+               [routerLink]="['/questions-management/update-question', element.id]">
               <mat-icon aria-label="Edit">edit</mat-icon>
-            </button>
+            </a>
           </td>
         </ng-container>
 

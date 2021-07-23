@@ -6,6 +6,8 @@ import { Location } from '@angular/common';
 import * as uuid from 'uuid';
 import { QuestionnaireService } from '../../../services/questionnaire.service';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { AnswersInterface } from '../../../shared/interfaces/answers.interface';
 
 @Component({
   selector: 'app-questions-builder',
@@ -13,12 +15,17 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./questions-builder.component.scss']
 })
 export class QuestionsBuilderComponent implements OnInit, OnDestroy {
+  id: any;
+  isEdit = false;
+
   questionTitle: QuestionsInterface;
   formQuestionsBuilder: FormGroup;
   lengthArrayAnswer = 2;
   maxAnswers = 5;
   date = new Date();
   changeForm: Subscription;
+
+  question: QuestionsInterface;
 
   selectedType = [
     {questionType: 'radio', value: 'Single choice - the ability to choose only one option from the proposed'},
@@ -29,11 +36,18 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private location: Location,
+    private activateRoute: ActivatedRoute,
     private questionnaireService: QuestionnaireService,
   ) {
   }
 
   ngOnInit(): void {
+    this.id = this.activateRoute.snapshot.params.id;
+    console.log(this.id);
+
+    this.isEdit = !!this.id;
+    console.log(this.isEdit);
+
     this.initialForm();
 
     this.changeForm = this.questionTypeControl.valueChanges
@@ -48,6 +62,14 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
           this.answersFormArray.enable();
         }
       });
+
+    if (this.isEdit) {
+      console.log('if (this.isEdit)');
+
+      this.question = this.questionnaireService.getQuestionById(this.id) || null;
+      console.log('this.question', this.question);
+    }
+
   }
 
   private initialForm(): void {

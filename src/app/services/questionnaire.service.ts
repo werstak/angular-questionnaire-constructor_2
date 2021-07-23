@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { QuestionsInterface } from '../shared/interfaces/questions.interface';
 import { AnswersInterface } from '../shared/interfaces/answers.interface';
+import { QUESTIONS } from '../shared/constants/questions';
 
 @Injectable({
   providedIn: 'root',
@@ -53,10 +54,10 @@ export class QuestionnaireService {
   }
 
 
-  // setAllQuestions(): void {
-  //   localStorage.setItem('all_questions', JSON.stringify(QUESTIONS));
-  //   this.getAllQuestions();
-  // }
+  setAllQuestions(): void {
+    localStorage.setItem('all_questions', JSON.stringify(QUESTIONS));
+    this.getAllQuestions();
+  }
 
   getAllQuestions(): void {
     this.allQuestions = JSON.parse(localStorage.getItem('all_questions') || '[]');
@@ -91,8 +92,9 @@ export class QuestionnaireService {
   /** Management questions */
 
   getAllQuestionsList(): void {
-    this.questionsList$ = (this.allQuestionsList = JSON.parse(localStorage.getItem('all_questions') || '[]'));
-    console.log('allQuestionsList', this.allQuestionsList);
+   return  JSON.parse(localStorage.getItem('all_questions') || '[]');
+    // this.questionsList$ = (this.allQuestionsList = JSON.parse(localStorage.getItem('all_questions') || '[]'));
+    // console.log('allQuestionsList', this.allQuestionsList);
   }
 
   createQuestion(question: QuestionsInterface): void {
@@ -107,6 +109,12 @@ export class QuestionnaireService {
     this.updateQuestions$(questionsList);
 
     console.log(questionsList);
+  }
+
+
+  getQuestionById(id): QuestionsInterface {
+    const questions = this.getAllQuestionsList();
+    return questions[id];
   }
 
 

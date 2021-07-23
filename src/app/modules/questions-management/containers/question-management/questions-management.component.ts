@@ -13,6 +13,7 @@ import { QuestionsInterface } from '../../../../shared/interfaces/questions.inte
   styleUrls: ['./questions-management.component.scss']
 })
 export class QuestionsManagementComponent implements OnInit {
+
   displayedColumns: string[] = ['date', 'questionTitle', 'edit', 'delete'];
   questions$ = this.questionnaireService.questions$;
   // answers$ = this.questionnaireService.answers$;
@@ -32,7 +33,7 @@ export class QuestionsManagementComponent implements OnInit {
     // this.store.dispatch(fetchQuestionsAction());
     // this.question$ = this.store.select(getQuestions);
 
-    this.questionnaireService.getAllQuestionsList();
+    // this.questionnaireService.getAllQuestionsList();
   }
 
   dellQuestion(id): void {
@@ -40,7 +41,9 @@ export class QuestionsManagementComponent implements OnInit {
     this.questionnaireService.deleteQuestion(id);
   }
 
-  editQuestion(id): void {
-    console.log('id===', id);
-  }
+  // editQuestion(id): void {
+  //   this.itemPost = id;
+  //   console.log('id===', id);
+  // }
+
 }

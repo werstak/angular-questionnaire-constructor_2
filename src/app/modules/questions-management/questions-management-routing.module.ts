@@ -13,7 +13,7 @@ const routes: Routes = [
     component: QuestionsBuilderComponent,
   },
   {
-    path: 'update-question',
+    path: 'update-question/:id',
     component: QuestionsBuilderComponent,
   },
   {
