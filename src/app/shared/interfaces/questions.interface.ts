@@ -1,5 +1,5 @@
 export class QuestionsInterface {
-  id: number;
+  id: any;
   date?: string;
   questionType: string;
   questionTitle: string;

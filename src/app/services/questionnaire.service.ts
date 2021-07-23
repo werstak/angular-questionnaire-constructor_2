@@ -11,24 +11,16 @@ import { QUESTIONS } from '../shared/constants/questions';
   providedIn: 'root',
 })
 export class QuestionnaireService {
-  answers$: Observable<QuestionsInterface[]>;
-  allAnswers$ = new BehaviorSubject<AnswersInterface>(
-    this.getAllAnswers()
-  );
-
   allQuestions: QuestionsInterface[];
-  questions$: Observable<QuestionsInterface[]>;
+  questionnaireQuestions$: Observable<QuestionsInterface[]>;
+  allQuestionsList$ = new BehaviorSubject<QuestionsInterface[]>(this.getAllQuestionsList());
 
+  answers$: Observable<QuestionsInterface[]>;
+  allAnswers$ = new BehaviorSubject<AnswersInterface>(this.getAllAnswers());
 
-  allQuestionsList: QuestionsInterface[];
-  questionsList$: Observable<QuestionsInterface[]>;
-
-  // questionsList$ = new BehaviorSubject<QuestionsInterface>(
-  //   this.getAllQuestionsList()
-  // );
 
   updateQuestions$(allQuestions: any): void {
-    this.questions$ = combineLatest([
+    this.questionnaireQuestions$ = combineLatest([
       of(allQuestions),
       this.allAnswers$
     ]).pipe(
@@ -84,17 +76,24 @@ export class QuestionnaireService {
     return JSON.parse(localStorage.getItem('answers') || '{}');
   }
 
-  getAllAnswersById(id: number): AnswersInterface {
+  getAllAnswersById(id: any): AnswersInterface {
     const answers = this.getAllAnswers();
     return answers[id];
   }
 
   /** Management questions */
 
-  getAllQuestionsList(): void {
-   return  JSON.parse(localStorage.getItem('all_questions') || '[]');
-    // this.questionsList$ = (this.allQuestionsList = JSON.parse(localStorage.getItem('all_questions') || '[]'));
-    // console.log('allQuestionsList', this.allQuestionsList);
+  getAllQuestionsList(): QuestionsInterface[] {
+    const questions = JSON.parse(localStorage.getItem('all_questions') || '[]');
+    if (this.allQuestionsList$) {
+      this.updateQuestionsList();
+    }
+    return questions;
+  }
+
+  updateQuestionsList(): void {
+    const questions = JSON.parse(localStorage.getItem('all_questions') || '[]');
+    this.allQuestionsList$.next(questions);
   }
 
   createQuestion(question: QuestionsInterface): void {
@@ -106,15 +105,13 @@ export class QuestionnaireService {
   deleteQuestion(questionId): void {
     const questionsList = this.allQuestions = JSON.parse(localStorage.getItem('all_questions') || '[]').filter(n => n.id !== questionId);
     localStorage.setItem('all_questions', JSON.stringify(questionsList));
+    this.updateQuestionsList();
     this.updateQuestions$(questionsList);
-
-    console.log(questionsList);
   }
-
 
   getQuestionById(id): QuestionsInterface {
     const questions = this.getAllQuestionsList();
-    return questions[id];
+    return questions.find(x => x.id === id);
   }
 
 

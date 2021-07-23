@@ -1,5 +1,5 @@
 export class AnswersInterface {
-  id: number;
+  id: any;
   createdAt?: number;
   value: any;
 }

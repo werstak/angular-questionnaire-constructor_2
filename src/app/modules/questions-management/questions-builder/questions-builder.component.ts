@@ -7,7 +7,6 @@ import * as uuid from 'uuid';
 import { QuestionnaireService } from '../../../services/questionnaire.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { AnswersInterface } from '../../../shared/interfaces/answers.interface';
 
 @Component({
   selector: 'app-questions-builder',
@@ -25,7 +24,7 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
   date = new Date();
   changeForm: Subscription;
 
-  question: QuestionsInterface;
+  currentQuestion: QuestionsInterface;
 
   selectedType = [
     {questionType: 'radio', value: 'Single choice - the ability to choose only one option from the proposed'},
@@ -43,7 +42,7 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.id = this.activateRoute.snapshot.params.id;
-    console.log(this.id);
+    // console.log('snapshot.params.id ', this.id);
 
     this.isEdit = !!this.id;
     console.log(this.isEdit);
@@ -64,10 +63,10 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
       });
 
     if (this.isEdit) {
-      console.log('if (this.isEdit)');
+      // console.log('isEdit == ');
 
-      this.question = this.questionnaireService.getQuestionById(this.id) || null;
-      console.log('this.question', this.question);
+      this.currentQuestion = this.questionnaireService.getQuestionById(this.id) || null;
+      console.log('currentQuestion', this.currentQuestion);
     }
 
   }

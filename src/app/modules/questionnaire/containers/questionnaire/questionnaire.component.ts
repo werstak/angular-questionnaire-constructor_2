@@ -7,7 +7,7 @@ import { QuestionnaireService } from '../../../../services/questionnaire.service
   styleUrls: ['./questionnaire.component.scss']
 })
 export class QuestionnaireComponent implements OnInit {
-  questions$ = this.questionnaireService.questions$;
+  questionnaireQuestions$ = this.questionnaireService.questionnaireQuestions$;
   answers$ = this.questionnaireService.answers$;
 
   constructor(

@@ -8,9 +8,9 @@
     </div>
 
     <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="questions$">
+      <table mat-table [dataSource]="allQuestionsList$">
 
-        <!-- ID Column -->
+        <!-- date Column -->
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef> Date </th>
           <td mat-cell *matCellDef="let element"> {{element.date | date:'y.M.d - h:mm a'}} </td>
