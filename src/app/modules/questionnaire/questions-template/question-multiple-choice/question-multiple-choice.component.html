@@ -1,5 +1,5 @@
 <mat-card class="question-card">
-  <section class="example-section" [formGroup]="form">
+  <section class="question-card__section" [formGroup]="form">
     <p class="question-card__title">{{question.questionTitle}}</p>
     <p *ngFor="let answer of question.answers">
       <mat-checkbox [formControlName]="answer.value">

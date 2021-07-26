@@ -12,9 +12,11 @@ export class QuestionnaireComponent implements OnInit {
 
   constructor(
     private questionnaireService: QuestionnaireService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
+    this.questionnaireService.getAllQuestions();
   }
 
 }

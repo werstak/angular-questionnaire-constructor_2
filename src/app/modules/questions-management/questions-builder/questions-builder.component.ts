@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { QuestionsInterface } from '../../../shared/interfaces/questions.interface';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import * as uuid from 'uuid';
 import { QuestionnaireService } from '../../../services/questionnaire.service';
+import * as uuid from 'uuid';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-questions-builder',
@@ -14,7 +14,6 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./questions-builder.component.scss']
 })
 export class QuestionsBuilderComponent implements OnInit, OnDestroy {
-  id: any;
   isEdit = false;
 
   questionTitle: QuestionsInterface;
@@ -23,8 +22,6 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
   maxAnswers = 5;
   date = new Date();
   changeForm: Subscription;
-
-  currentQuestion: QuestionsInterface;
 
   selectedType = [
     {questionType: 'radio', value: 'Single choice - the ability to choose only one option from the proposed'},
@@ -41,13 +38,12 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.id = this.activateRoute.snapshot.params.id;
-    // console.log('snapshot.params.id ', this.id);
+    const id: string = this.activateRoute.snapshot.params.id;
+    const currentQuestion = this.questionnaireService.getQuestionById(id) || null;
 
-    this.isEdit = !!this.id;
-    console.log(this.isEdit);
+    this.isEdit = Boolean(currentQuestion);
 
-    this.initialForm();
+    this.initialForm(currentQuestion);
 
     this.changeForm = this.questionTypeControl.valueChanges
       .subscribe(type => {
@@ -56,58 +52,59 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
         });
 
         if (type === 'textarea') {
-          this.answersFormArray.disable();
+          this.optionsFormArray.disable();
         } else {
-          this.answersFormArray.enable();
+          this.optionsFormArray.enable();
         }
       });
-
-    if (this.isEdit) {
-      // console.log('isEdit == ');
-
-      this.currentQuestion = this.questionnaireService.getQuestionById(this.id) || null;
-      console.log('currentQuestion', this.currentQuestion);
-    }
-
   }
 
-  private initialForm(): void {
-    this.formQuestionsBuilder = this.fb.group({
-      id: [uuid.v4()],
-      date: [this.date],
-      questionType: ['radio', Validators.required],
-      questionTitle: [null, Validators.compose([
+  private initialAnswerGroup(): any {
+    return this.fb.group({
+      value: [uuid.v4()],
+      title: [null, Validators.compose([
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(250)])
       ],
-      answers: this.fb.array([
-        this.fb.group({
-          value: [uuid.v4()],
-          title: [null, Validators.compose([
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(250)])
-          ],
-        }),
-        this.fb.group({
-          value: [uuid.v4()],
-          title: [null, Validators.compose([
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(250)])
-          ],
-        })
-      ]),
     });
   }
 
-  get answersFormArray(): FormArray {
+  private initialForm(currentQuestion?: QuestionsInterface): void {
+    const id = currentQuestion?.id || uuid.v4();
+    const date = currentQuestion?.date || this.date;
+    const questionType = currentQuestion?.questionType || 'radio';
+    const questionTitle = currentQuestion?.questionTitle || null;
+    const answers = currentQuestion?.answers?.map(answer => {
+      return this.fb.group({
+        value: [answer.value],
+        title: [answer.title, Validators.compose([
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(250)])
+        ],
+      });
+    }) || [this.initialAnswerGroup(), this.initialAnswerGroup()];
+
+    this.formQuestionsBuilder = this.fb.group({
+      id: [id],
+      date: [date],
+      questionType: [{value: questionType, disabled: this.isEdit}, Validators.required],
+      questionTitle: [questionTitle, Validators.compose([
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(250)])
+      ],
+      answers: this.fb.array(questionType === 'textarea' ? [] : answers),
+    });
+  }
+
+  get optionsFormArray(): FormArray {
     return this.formQuestionsBuilder.get('answers') as FormArray;
   }
 
   get options(): Array<AbstractControl> {
-    return this.answersFormArray.controls;
+    return this.optionsFormArray.controls;
   }
 
   get questionTypeControl(): FormControl {
@@ -116,7 +113,7 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
 
   addNewAnswer(): void {
     if (this.lengthArrayAnswer < this.maxAnswers) {
-      const answersModel = this.fb.group({
+      const optionsModel = this.fb.group({
         value: [uuid.v4()],
         title: [null, Validators.compose([
           Validators.required,
@@ -124,7 +121,7 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
           Validators.maxLength(200)])
         ],
       });
-      (this.formQuestionsBuilder.get('answers') as FormArray).push(answersModel);
+      (this.formQuestionsBuilder.get('answers') as FormArray).push(optionsModel);
       this.lengthArrayAnswer++;
     }
     return;
@@ -141,8 +138,16 @@ export class QuestionsBuilderComponent implements OnInit, OnDestroy {
   }
 
   submitQuestion(): void {
-    const dataForm = this.formQuestionsBuilder.value;
-    this.questionnaireService.createQuestion(dataForm);
+    const dataForm = {
+      ...this.formQuestionsBuilder.value,
+      questionType: this.questionTypeControl.value
+    };
+    if (this.isEdit) {
+      this.questionnaireService.updateQuestion(dataForm);
+    } else {
+      this.questionnaireService.createQuestion(dataForm);
+    }
+
     this.goBack();
   }
 

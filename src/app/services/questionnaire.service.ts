@@ -45,7 +45,6 @@ export class QuestionnaireService {
     );
   }
 
-
   setAllQuestions(): void {
     localStorage.setItem('all_questions', JSON.stringify(QUESTIONS));
     this.getAllQuestions();
@@ -102,6 +101,13 @@ export class QuestionnaireService {
     this.updateQuestions$(this.allQuestions);
   }
 
+  updateQuestion(question: QuestionsInterface): void {
+    const questionIndex = this.allQuestions.findIndex(value => value.id === question.id);
+    this.allQuestions[questionIndex] = question;
+    localStorage.setItem('all_questions', JSON.stringify([...this.allQuestions]));
+    this.updateQuestions$(this.allQuestions);
+  }
+
   deleteQuestion(questionId): void {
     const questionsList = this.allQuestions = JSON.parse(localStorage.getItem('all_questions') || '[]').filter(n => n.id !== questionId);
     localStorage.setItem('all_questions', JSON.stringify(questionsList));
@@ -113,6 +119,5 @@ export class QuestionnaireService {
     const questions = this.getAllQuestionsList();
     return questions.find(x => x.id === id);
   }
-
 
 }
